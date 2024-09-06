@@ -40,11 +40,11 @@ app.get('/pdf/invoice/:id', async (req, res) => {
   app.post('/send-mail', async (req, res) => {
     
     console.log(req.body)
-    const { to, subject, message } = req.body;
-    console.log(to,subject,message)
+    const { to, subject, text } = req.body;
+    console.log(to,subject,text)
   
     try {
-      await sendEmail(to, subject, message);
+      await sendEmail(to, subject, text);
       res.status(200).send('Email sent successfully');
     } catch (error) {
       console.log(error)
