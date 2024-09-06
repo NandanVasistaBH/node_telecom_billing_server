@@ -2,9 +2,11 @@ import express from 'express';
 import displayInvoice from './controller/invoiceController.js'; 
 import getInvoiceById from './service/invoiceService.js'
 import generatePDF from './service/pdfService.js'
+import sendEmail from "./service/mailService.js"
 import cors from 'cors';
 const app = express();
 app.use(cors());
+app.use(express.json()); 
 const corsOptions = {
   origin: 'http://localhost:10000',
   methods: 'GET,POST,PUT,DELETE', 
@@ -35,7 +37,20 @@ app.get('/pdf/invoice/:id', async (req, res) => {
       res.status(500).send('Internal Server Error');
     }
   });
-// Route to handle the root URL
+  app.post('/send-mail', async (req, res) => {
+    
+    console.log(req.body)
+    const { to, subject, message } = req.body;
+    console.log(to,subject,message)
+  
+    try {
+      await sendEmail(to, subject, message);
+      res.status(200).send('Email sent successfully');
+    } catch (error) {
+      console.log(error)
+      res.status(500).send('Error sending email');
+    }
+  });
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
