@@ -5,13 +5,15 @@ import generatePDF from './service/pdfService.js'
 import sendEmail from "./service/mailService.js"
 import cors from 'cors';
 const app = express();
-app.use(cors());
-app.use(express.json()); 
+
+// CORS Configuration
 const corsOptions = {
-  origin: 'http://localhost:10000',
-  methods: 'GET,POST,PUT,DELETE', 
+  origin: ['http://localhost:10000', 'http://localhost:3000'],
+  methods: 'GET,POST,PUT,DELETE',
 };
+
 app.use(cors(corsOptions));
+app.use(express.json());
 const PORT = process.env.PORT || 5001;
 app.get('/invoice/:id', displayInvoice);
 app.get('/pdf/invoice/:id', async (req, res) => {
